@@ -1,0 +1,30 @@
+# ── Section 1: model ──
+model:
+  name: "SimpleCNN"
+  num_classes: 10 
+
+# ── Section 2: training ──
+training:
+  epochs: 1
+  batch_size: 32
+  learning_rate: 0.01
+  optimizer: "SGD"
+
+# ── Section 3: federated ──
+federated:
+  num_clients: 5
+  num_rounds: 10
+  fraction_fit: 0.5 # (50% of clients train each round)
+
+# ── Section 4: privacy ──
+privacy:
+  enable_dp: false #(we'll turn this on in Phase 6)
+  target_epsilon: 10.0 #(privacy budget — lower = more private)
+  max_grad_norm: 1.0 #(clips gradients above this norm)
+  noise_multiplier: 0.5 #(controls noise added to gradients)
+
+# ── Section 5: data ──
+data:
+  dataset_name: "CIFAR10"
+  data_dir: "./data" #(where torchvision downloads to)
+  iid: true #(start with IID, we'll add non-IID later)
