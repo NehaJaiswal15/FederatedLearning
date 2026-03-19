@@ -1,0 +1,11 @@
+torch>=2.1.0        #Deep learning framework
+torchvision>=0.16.0 #Image datasets & transforms
+flwr>=1.5.0         #Flower federated learning
+opacus>=1.4.0       #Differential privacy (DP-SGD)
+fastapi>=0.104.0    #REST API framework
+uvicorn>=0.24.0     #ASGI server for FastAPI
+streamlit>=1.28.0   #Interactive dashboard
+matplotlib>=3.7.0   #Static plotting
+seaborn>=0.12.0     #Statistical plotting
+wandb>=0.16.0       #Experiment tracking
+pyyaml>=6.0         #YAML config parsing
