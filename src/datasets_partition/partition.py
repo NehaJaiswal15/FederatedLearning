@@ -118,7 +118,7 @@ def partition_data(dataset, num_clients, iid=True, classes_per_client=2):
 
 # ── Quick test: run this file directly to verify it works ──
 if __name__ == "__main__":
-    from src.data.dataset import get_cifar10, CIFAR10_CLASSES
+    from src.datasets_partition.dataset import get_cifar10, CIFAR10_CLASSES
 
     # Load dataset
     train_data, _ = get_cifar10()
