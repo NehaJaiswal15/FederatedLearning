@@ -64,7 +64,7 @@ CIFAR10_CLASSES = [
 if __name__ == "__main__":
     train_data, test_data = get_cifar10()
 
-    print("✅ CIFAR-10 loaded successfully!\n")
+    print("[OK] CIFAR-10 loaded successfully!\n")
     print(f"  Training samples: {len(train_data)}")
     print(f"  Test samples:     {len(test_data)}")
     print(f"  Image shape:      {train_data[0][0].shape}")  # (3, 32, 32)

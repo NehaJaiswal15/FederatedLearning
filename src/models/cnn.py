@@ -92,10 +92,10 @@ if __name__ == "__main__":
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
-    print("✅ SimpleCNN created successfully!\n")
+    print("[OK] SimpleCNN created successfully!\n")
     print(f"  Input shape:         {dummy_input.shape}")
     print(f"  Output shape:        {output.shape}")
     print(f"  Total parameters:    {total_params:,}")
     print(f"  Trainable parameters:{trainable_params:,}")
-    print(f"\n── Model Architecture ──\n")
+    print(f"\n-- Model Architecture --\n")
     print(model)

@@ -108,10 +108,10 @@ def partition_data(dataset, num_clients, iid=True, classes_per_client=2):
         list[Subset]: One Subset per client
     """
     if iid:
-        print(f"📊 Partitioning data: IID across {num_clients} clients")
+        print(f"[PARTITION] IID across {num_clients} clients")
         return iid_partition(dataset, num_clients)
     else:
-        print(f"📊 Partitioning data: Non-IID across {num_clients} clients "
+        print(f"[PARTITION] Non-IID across {num_clients} clients "
               f"({classes_per_client} classes each)")
         return non_iid_partition(dataset, num_clients, classes_per_client)
 
@@ -145,4 +145,4 @@ if __name__ == "__main__":
         unique_classes = sorted(set(client_labels))
         class_names = [CIFAR10_CLASSES[c] for c in unique_classes]
         print(f"  Client {i}: {len(client_data)} samples, "
-              f"classes: {unique_classes} → {class_names}")
+              f"classes: {unique_classes} -> {class_names}")

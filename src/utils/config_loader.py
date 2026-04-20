@@ -38,8 +38,8 @@ def load_config(config_path="config/default.yaml"):
 if __name__ == "__main__":
     config = load_config()
 
-    print("✅ Config loaded successfully!\n")
-    print("── Full Config ──")
+    print("[OK] Config loaded successfully!\n")
+    print("-- Full Config --")
     for section, values in config.items():
         print(f"\n[{section}]")
         for key, value in values.items():
