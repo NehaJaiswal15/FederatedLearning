@@ -84,11 +84,14 @@ def run_federated_training(config=None):
     fraction_fit = fed_cfg["fraction_fit"]
     num_selected = max(1, int(num_clients * fraction_fit))
 
+    enable_dp = config["privacy"]["enable_dp"]
+
     print(f"\n{'='*60}")
     print(f"  FEDERATED TRAINING (FedAvg)")
     print(f"  Clients: {num_clients} | Rounds: {num_rounds} | "
           f"Selected/Round: {num_selected}")
     print(f"  Data Distribution: {'IID' if data_cfg['iid'] else 'Non-IID'}")
+    print(f"  Differential Privacy: {'ENABLED' if enable_dp else 'DISABLED'}")
     print(f"{'='*60}\n")
 
     # -- Step 2: Load and partition the dataset --
@@ -171,18 +174,28 @@ def run_federated_training(config=None):
         avg_train_loss = sum(round_train_losses) / len(round_train_losses)
         avg_train_acc = sum(round_train_accs) / len(round_train_accs)
 
+        # Track epsilon if DP is enabled
+        avg_epsilon = None
+        if enable_dp:
+            epsilons = [m.get("epsilon", 0) for _, _, m in client_results]
+            avg_epsilon = sum(epsilons) / len(epsilons) if epsilons else 0
+
         history["round"].append(round_num)
         history["test_loss"].append(test_loss)
         history["test_accuracy"].append(test_acc)
         history["train_losses"].append(avg_train_loss)
         history["train_accuracies"].append(avg_train_acc)
 
-        print(
+        # Build round summary
+        summary = (
             f"  Round [{round_num:>2}/{num_rounds}]  "
             f"Clients: {selected_ids}  |  "
             f"Avg Train Acc: {avg_train_acc:.2f}%  |  "
             f"Test Acc: {test_acc:.2f}%"
         )
+        if avg_epsilon is not None:
+            summary += f"  |  Epsilon: {avg_epsilon:.2f}"
+        print(summary)
 
     # -- Step 7: Final summary --
     final_acc = history["test_accuracy"][-1]
@@ -192,6 +205,9 @@ def run_federated_training(config=None):
     print(f"  FEDERATED TRAINING COMPLETE")
     print(f"  Final Test Accuracy: {final_acc:.2f}%")
     print(f"  Best Test Accuracy:  {best_acc:.2f}%")
+    if enable_dp:
+        print(f"  Privacy: DP-SGD enabled (noise={config['privacy']['noise_multiplier']}, "
+              f"clip={config['privacy']['max_grad_norm']})")
     print(f"{'='*60}\n")
 
     return history

@@ -18,7 +18,7 @@ federated:
 
 # ── Section 4: privacy ──
 privacy:
-  enable_dp: false #(we'll turn this on in Phase 6)
+  enable_dp: true #(DP-SGD enabled — Phase 6)
   target_epsilon: 10.0 #(privacy budget — lower = more private)
   max_grad_norm: 1.0 #(clips gradients above this norm)
   noise_multiplier: 0.5 #(controls noise added to gradients)
