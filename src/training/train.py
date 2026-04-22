@@ -103,13 +103,26 @@ def evaluate(model, dataloader, criterion, device):
     return avg_loss, accuracy
 
 
-def run_centralized_training(config=None):
+def run_centralized_training(config=None, use_wandb=False):
     """
     Execute centralized (non-federated) training on full CIFAR-10.
+
+    Args:
+        config (dict, optional): Configuration dictionary.
+        use_wandb (bool): If True, log metrics to Weights & Biases.
     """
     # ── Step 1: Load configuration ──
     if config is None:
         config = load_config()
+
+    # ── Optional: Initialize W&B ──
+    if use_wandb:
+        from src.utils.logger import init_wandb, log_epoch, log_summary, finish_wandb
+        init_wandb(
+            config=config,
+            run_name="centralized-baseline",
+            tags=["centralized", "baseline"],
+        )
 
     training_cfg = config["training"]
     model_cfg = config["model"]
@@ -194,6 +207,10 @@ def run_centralized_training(config=None):
             f"Test Loss: {test_loss:.4f}  Test Acc: {test_acc:.2f}%"
         )
 
+        # Log to W&B
+        if use_wandb:
+            log_epoch(epoch, train_loss, train_acc, test_loss, test_acc)
+
     # ── Step 6: Final summary ──
     final_test_acc = results["test_accuracies"][-1]
     results["final_test_accuracy"] = final_test_acc
@@ -202,6 +219,11 @@ def run_centralized_training(config=None):
     print(f"  TRAINING COMPLETE")
     print(f"  Final Test Accuracy: {final_test_acc:.2f}%")
     print(f"{'='*60}\n")
+
+    # Log summary and finish W&B
+    if use_wandb:
+        log_summary(results, mode="centralized")
+        finish_wandb()
 
     return results
 

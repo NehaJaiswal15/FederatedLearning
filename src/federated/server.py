@@ -62,12 +62,13 @@ def federated_average(client_results):
     return aggregated
 
 
-def run_federated_training(config=None):
+def run_federated_training(config=None, use_wandb=False):
     """
     Execute federated training with FedAvg simulation.
 
     Args:
         config (dict, optional): Configuration dict. Loads default if None.
+        use_wandb (bool): If True, log metrics to Weights & Biases.
 
     Returns:
         dict: Training history with per-round metrics
@@ -75,6 +76,17 @@ def run_federated_training(config=None):
     # -- Step 1: Load configuration --
     if config is None:
         config = load_config()
+
+    # -- Optional: Initialize W&B --
+    if use_wandb:
+        from src.utils.logger import init_wandb, log_round, log_summary, finish_wandb
+        dp_tag = "dp-enabled" if config["privacy"]["enable_dp"] else "no-dp"
+        iid_tag = "iid" if config["data"]["iid"] else "non-iid"
+        init_wandb(
+            config=config,
+            run_name=f"federated-{iid_tag}-{dp_tag}",
+            tags=["federated", iid_tag, dp_tag],
+        )
 
     fed_cfg = config["federated"]
     data_cfg = config["data"]
@@ -197,6 +209,18 @@ def run_federated_training(config=None):
             summary += f"  |  Epsilon: {avg_epsilon:.2f}"
         print(summary)
 
+        # Log to W&B
+        if use_wandb:
+            log_round(
+                round_num=round_num,
+                avg_train_loss=avg_train_loss,
+                avg_train_acc=avg_train_acc,
+                test_loss=test_loss,
+                test_acc=test_acc,
+                epsilon=avg_epsilon,
+                selected_clients=selected_ids,
+            )
+
     # -- Step 7: Final summary --
     final_acc = history["test_accuracy"][-1]
     best_acc = max(history["test_accuracy"])
@@ -209,6 +233,11 @@ def run_federated_training(config=None):
         print(f"  Privacy: DP-SGD enabled (noise={config['privacy']['noise_multiplier']}, "
               f"clip={config['privacy']['max_grad_norm']})")
     print(f"{'='*60}\n")
+
+    # Log summary and finish W&B
+    if use_wandb:
+        log_summary(history, mode="federated")
+        finish_wandb()
 
     return history
 
