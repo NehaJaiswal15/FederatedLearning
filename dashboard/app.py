@@ -25,7 +25,7 @@ import json
 # Page Configuration 
 st.set_page_config(
     page_title="Federated Learning Dashboard",
-    page_icon="🔒",
+    page_icon="FL",
     layout="wide",
 )
 

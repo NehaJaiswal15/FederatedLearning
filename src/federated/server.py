@@ -149,6 +149,8 @@ def run_federated_training(config=None, use_wandb=False):
         "test_accuracy": [],
         "train_losses": [],
         "train_accuracies": [],
+        "epsilons": [],
+        "dp_enabled": enable_dp,
     }
 
     print(f"\n{'-'*60}")
@@ -197,6 +199,8 @@ def run_federated_training(config=None, use_wandb=False):
         history["test_accuracy"].append(test_acc)
         history["train_losses"].append(avg_train_loss)
         history["train_accuracies"].append(avg_train_acc)
+        if avg_epsilon is not None:
+            history["epsilons"].append(avg_epsilon)
 
         # Build round summary
         summary = (
