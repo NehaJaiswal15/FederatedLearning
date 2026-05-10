@@ -1,7 +1,7 @@
 """
 Centralized Training Baseline (Phase 4)
 
-Standard (non-federated) training loop for CIFAR-10 using SimpleCNN.
+Standard (non-federated) training loop for PathMNIST using SimpleCNN.
 This establishes a performance baseline to compare against federated training.
 
 Expected accuracy: ~70-75% after 10 epochs on CPU.
@@ -16,7 +16,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 
 from src.utils.config_loader import load_config
-from src.datasets_partition.dataset import get_cifar10, CIFAR10_CLASSES
+from src.datasets_partition.dataset import get_pathmnist, DATASET_CLASSES
 from src.models.cnn import SimpleCNN
 
 
@@ -42,6 +42,7 @@ def train_one_epoch(model, dataloader, optimizer, criterion, device):
 
     for batch_idx, (images, labels) in enumerate(dataloader):
         images, labels = images.to(device), labels.to(device)
+        labels = labels.squeeze().long()  # MedMNIST: (batch,1) -> (batch,)
 
         # ── Forward pass ──
         optimizer.zero_grad()
@@ -86,6 +87,7 @@ def evaluate(model, dataloader, criterion, device):
     with torch.no_grad():
         for images, labels in dataloader:
             images, labels = images.to(device), labels.to(device)
+            labels = labels.squeeze().long()  # MedMNIST: (batch,1) -> (batch,)
 
             # Forward pass only
             outputs = model(images)
@@ -105,7 +107,7 @@ def evaluate(model, dataloader, criterion, device):
 
 def run_centralized_training(config=None, use_wandb=False):
     """
-    Execute centralized (non-federated) training on full CIFAR-10.
+    Execute centralized (non-federated) training on full PathMNIST.
 
     Args:
         config (dict, optional): Configuration dictionary.
@@ -137,9 +139,9 @@ def run_centralized_training(config=None, use_wandb=False):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
 
-    # ── Step 3: Load CIFAR-10 ──
-    print("Loading CIFAR-10 dataset...")
-    train_dataset, test_dataset = get_cifar10(data_dir=data_cfg["data_dir"])
+    # -- Step 3: Load dataset --
+    print("Loading PathMNIST dataset...")
+    train_dataset, test_dataset = get_pathmnist(data_dir=data_cfg["data_dir"])
 
     train_loader = DataLoader(
         train_dataset,

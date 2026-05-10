@@ -160,23 +160,23 @@ def plot_data_distribution(num_clients, iid):
     """Visualize how data is distributed across clients."""
     fig, ax = plt.subplots(figsize=(10, 5))
 
-    classes = ["airplane", "automobile", "bird", "cat", "deer",
-               "dog", "frog", "horse", "ship", "truck"]
+    classes = ["Adipose", "Background", "Debris", "Lymphocytes", "Mucus",
+               "Smooth Muscle", "Normal Mucosa", "Stroma", "Epithelium"]
 
     if iid:
         # IID: each client gets equal samples of all classes
-        data = np.ones((num_clients, 10)) * (5000 // num_clients // 10)
+        data = np.ones((num_clients, 9)) * (5000 // num_clients // 9)
     else:
         # Non-IID: each client gets only 2 classes
-        data = np.zeros((num_clients, 10))
+        data = np.zeros((num_clients, 9))
         for i in range(num_clients):
-            cls1 = (i * 2) % 10
-            cls2 = (i * 2 + 1) % 10
+            cls1 = (i * 2) % 9
+            cls2 = (i * 2 + 1) % 9
             data[i, cls1] = 5000 // num_clients // 2
             data[i, cls2] = 5000 // num_clients // 2
 
     im = ax.imshow(data, cmap="YlOrRd", aspect="auto")
-    ax.set_xticks(range(10))
+    ax.set_xticks(range(9))
     ax.set_xticklabels(classes, rotation=45, ha="right")
     ax.set_yticks(range(num_clients))
     ax.set_yticklabels([f"Client {i}" for i in range(num_clients)])
@@ -237,7 +237,7 @@ Adjust all settings here **before** clicking a training button.
 ### Dashboard Sections
 
 **1. Data Distribution Heatmap**
-Visualizes how CIFAR-10 classes are split across clients. In Non-IID mode, each client only sees 2 classes, making federated training harder.
+Visualizes how PathMNIST tissue classes are split across clients. In Non-IID mode, each client only sees 2 classes, making federated training harder.
 
 **2. Training Controls**
 Two buttons to trigger training via the API:
@@ -271,7 +271,7 @@ st.markdown("---")
 
 # Data Distribution Visualization
 st.header("Data Distribution Across Clients")
-st.markdown("Shows how CIFAR-10 data is split across clients. IID gives each client all 10 classes; Non-IID restricts each client to only 2 classes.")
+st.markdown("Shows how PathMNIST data is split across clients. IID gives each client all 9 classes; Non-IID restricts each client to only 2 classes.")
 
 fig_dist = plot_data_distribution(num_clients, iid)
 st.pyplot(fig_dist)

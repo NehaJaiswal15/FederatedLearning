@@ -22,7 +22,7 @@ import random
 
 from src.models.cnn import SimpleCNN
 from src.utils.config_loader import load_config
-from src.datasets_partition.dataset import get_cifar10
+from src.datasets_partition.dataset import get_pathmnist
 from src.datasets_partition.partition import partition_data
 from src.training.train import evaluate
 from src.federated.client import FederatedClient
@@ -107,8 +107,8 @@ def run_federated_training(config=None, use_wandb=False):
     print(f"{'='*60}\n")
 
     # -- Step 2: Load and partition the dataset --
-    print("Loading CIFAR-10 dataset...")
-    train_dataset, test_dataset = get_cifar10(data_dir=data_cfg["data_dir"])
+    print("Loading PathMNIST dataset...")
+    train_dataset, test_dataset = get_pathmnist(data_dir=data_cfg["data_dir"])
 
     print(f"Partitioning data across {num_clients} clients...")
     client_datasets = partition_data(

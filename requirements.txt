@@ -1,5 +1,6 @@
 torch>=2.1.0        #Deep learning framework
 torchvision>=0.16.0 #Image datasets & transforms
+medmnist>=3.0.0     #Medical image benchmark datasets (PathMNIST)
 flwr[simulation]>=1.5.0  #Flower federated learning (includes Ray for simulation)
 opacus>=1.4.0       #Differential privacy (DP-SGD)
 fastapi>=0.104.0    #REST API framework

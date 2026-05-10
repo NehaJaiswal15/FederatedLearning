@@ -116,14 +116,14 @@ def partition_data(dataset, num_clients, iid=True, classes_per_client=2):
         return non_iid_partition(dataset, num_clients, classes_per_client)
 
 
-# ── Quick test: run this file directly to verify it works ──
+# -- Quick test: run this file directly to verify it works --
 if __name__ == "__main__":
-    from src.datasets_partition.dataset import get_cifar10, CIFAR10_CLASSES
+    from src.datasets_partition.dataset import get_pathmnist, DATASET_CLASSES
 
     # Load dataset
-    train_data, _ = get_cifar10()
+    train_data, _ = get_pathmnist()
 
-    # ── Test IID Partition ──
+    # -- Test IID Partition --
     print("\n" + "=" * 50)
     print("IID PARTITION TEST")
     print("=" * 50)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         unique_classes = len(set(client_labels))
         print(f"  Client {i}: {len(client_data)} samples, {unique_classes} classes")
 
-    # ── Test Non-IID Partition ──
+    # -- Test Non-IID Partition --
     print("\n" + "=" * 50)
     print("NON-IID PARTITION TEST")
     print("=" * 50)
@@ -143,6 +143,7 @@ if __name__ == "__main__":
         # Find which classes this client has
         client_labels = [train_data[idx][1] for idx in client_data.indices]
         unique_classes = sorted(set(client_labels))
-        class_names = [CIFAR10_CLASSES[c] for c in unique_classes]
+        class_names = [DATASET_CLASSES[c] for c in unique_classes]
         print(f"  Client {i}: {len(client_data)} samples, "
               f"classes: {unique_classes} -> {class_names}")
+

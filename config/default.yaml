@@ -1,7 +1,7 @@
 # ── Section 1: model ──
 model:
   name: "SimpleCNN"
-  num_classes: 10 
+  num_classes: 9 
 
 # ── Section 2: training ──
 training:
@@ -25,6 +25,6 @@ privacy:
 
 # ── Section 5: data ──
 data:
-  dataset_name: "CIFAR10"
+  dataset_name: "PathMNIST"
   data_dir: "./data" #(where torchvision downloads to)
   iid: true #(start with IID, we'll add non-IID later)
