@@ -48,13 +48,15 @@ def plot_accuracy_comparison():
         "centralized": "Centralized\nBaseline",
         "fl_iid_no_dp": "FL IID\n(no DP)",
         "fl_iid_dp": "FL IID\n+ DP",
-        "fl_noniid_no_dp": "FL Non-IID\n(no DP)",
-        "fl_noniid_dp": "FL Non-IID\n+ DP",
+        "fl_noniid_no_dp": "Non-IID\n2cls",
+        "fl_noniid_improved_no_dp": "Non-IID\n4cls",
+        "fl_noniid_dp": "Non-IID\n2cls+DP",
+        "fl_noniid_improved_dp": "Non-IID\n4cls+DP",
     }
 
-    colors = ["#2ECC71", "#3498DB", "#9B59B6", "#E67E22", "#E74C3C"]
+    colors = ["#2ECC71", "#3498DB", "#9B59B6", "#E67E22", "#F39C12", "#E74C3C", "#C0392B"]
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(12, 6))
 
     x_labels = []
     accuracies = []
@@ -97,8 +99,10 @@ def plot_training_curves():
     experiments = [
         ("fl_iid_no_dp.json", "FL IID (no DP)", "#3498DB", "-"),
         ("fl_iid_dp.json", "FL IID + DP", "#9B59B6", "--"),
-        ("fl_noniid_no_dp.json", "FL Non-IID (no DP)", "#E67E22", "-"),
-        ("fl_noniid_dp.json", "FL Non-IID + DP", "#E74C3C", "--"),
+        ("fl_noniid_no_dp.json", "Non-IID 2cls (no DP)", "#E67E22", "-"),
+        ("fl_noniid_improved_no_dp.json", "Non-IID 4cls (no DP)", "#F39C12", "-"),
+        ("fl_noniid_dp.json", "Non-IID 2cls + DP", "#E74C3C", "--"),
+        ("fl_noniid_improved_dp.json", "Non-IID 4cls + DP", "#C0392B", "--"),
     ]
 
     fig, ax = plt.subplots(figsize=(10, 6))

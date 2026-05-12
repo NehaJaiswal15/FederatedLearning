@@ -115,6 +115,7 @@ def run_federated_training(config=None, use_wandb=False):
         train_dataset,
         num_clients=num_clients,
         iid=data_cfg["iid"],
+        classes_per_client=data_cfg.get("classes_per_client", 2),
     )
 
     # -- Step 3: Create all clients --
