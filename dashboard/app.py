@@ -21,6 +21,7 @@ import seaborn as sns
 import numpy as np
 import requests
 import json
+import os
 
 # Page Configuration 
 st.set_page_config(
@@ -32,7 +33,7 @@ st.set_page_config(
 #  Styling 
 sns.set_theme(style="darkgrid")
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = os.environ.get("API_URL", "http://127.0.0.1:8000")
 
 #  SIDEBAR: Configuration & Controls
 
